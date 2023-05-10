@@ -13,22 +13,20 @@ module
 ├── __init__.py
 └──  __manifest__.py
 ```
-
-#### Composición de un módulo
 Ninguno es obligatorio
 
-- Business objects (Objetos de negocio):
+- Business objects (Models):
     - Python Objets
     - Describe la lógica e información del negocio
-- Objects views (Vistas):
+- Objects views (Views):
     - La forma como se verán los Business Objects (UI)
     - XML
-- Data files (Archivos de información):
+- Data files (Data):
     - Donde se declaran y guardan los datos del modelo
     - XML o CSV
-- Static web data (Información de la web):
+- Static web data (Static):
     - HTML, CSS, Javascript, Imagenes, etc.
-- Web controllers:
+- Web controllers (Controllers):
     - Manejan requests de los navegadores.
     - Redirecciones de URL
 

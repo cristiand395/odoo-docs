@@ -94,9 +94,26 @@
         help="Image of the attribute value for shop online product detail.",
     )
     ```
-|Binary |	string
-|Many2one | modelo relacionado
-|One2many |	modelo relacionado, campo inverso
-|Many2many |	modelo relacionado, tabla intermedia
+- `Many2one`:
+  - Parámetros: string, comodel_name
+  - Permite vincular un campo con un solo campo de otro modelo. 
+  - Ejemplos: Categorias, Compañía
+    ```py
+    product_category = fields.Many2one(
+        string="Product category",
+        comodel_name="product.category",
+    )
+    ```
+- `Many2Many`:
+  - Parámetros: string, comodel_name
+  - Permite vincular un campo con varios campos de otro modelo.
+  - Ejemplos: Clientes, Proyectos
+    ```py
+    customer_ids = fields.Many2Many(
+        string="Customers",
+        comodel_name="res.partner",
+    )
+    ```
+
 |Monetary | string
 

@@ -23,56 +23,56 @@
 
 #### Tipos de campos:
 - `Char`: 
-  - Parámetros: string
+  - Requerido: string
   - Cadena de texto limitado a 256 caracteres
   - Ejemplos: Direcciones, email
     ```py
     street = fields.Char(string="Street")
     ```
 - `Text`:
-  - Parámetros: string
+  - Requerido: string
   - Cadena de texto de longitud variable
   - Ejemplos: Comentarios, descripciones de productos
     ```py
     Comment = fields.Text(string="Comment")
     ```
 - `Integer`:
-  - Parámetros: string
+  - Requerido: string
   - Números enteros
   - Ejemplos:días, nivel
     ```py
     level = fields.Integer(string="Street")
     ```
 - `Float`:
-  - Parámetros: string
+  - Requerido: string
   - Números con decimales
   - Ejemplos: Precios, porcentajes
     ```py
     price = fields.Float(string="Street")
     ```
 - `Boolean`:
-  - Parámetros: string
+  - Requerido: string
   - Validación de verdadero o falso de una condición
   - Ejemplos: Activo, publicado
     ```py
     active = fields.Boolean(string="Active")
      ```
 - `Date`:
-  - Parámetros: string
+  - Requerido: string
   - Formato: YYYY-MM-DD
   - Ejemplos: Fecha de inicio, Fecha de vencimiento
     ```py
     due_date = fields.Date(string="Due Date")
     ```
 - `DateTime`:
-  - Parámetros: string
+  - Requerido: string
   - Formato: YYYY-MM-DD HH:MM:SS
   - Ejemplos: Fecha de reunión, Fecha de creación
     ```py
     meeting_time = fields.Datetime(string="Meeting time")
     ```
 - `Selection`:
-  - Parámetros: string, selection
+  - Requerido: string, selection
   - Permite seleccionar una sola opción de una lista limitada
   - Ejemplos: Estados, Tipos
     ```py
@@ -84,7 +84,7 @@
     )
     ```
 - `Binary`:
-  - Parámetros: string
+  - Requerido: string
   - Permite almacenar archivos binarios como imágenes, documentos, audio o video en formato Base64
   - Ejemplos: 
     ```py
@@ -95,7 +95,7 @@
     )
     ```
 - `Many2one`:
-  - Parámetros: string, comodel_name
+  - Requerido: string, comodel_name
   - Permite vincular un campo con un solo campo de otro modelo. 
   - Ejemplos: Categorias, Compañía
     ```py
@@ -104,16 +104,46 @@
         comodel_name="product.category",
     )
     ```
-- `Many2Many`:
-  - Parámetros: string, comodel_name
+- `Many2many`:
+  - Requerido: string, comodel_name
   - Permite vincular un campo con varios campos de otro modelo.
   - Ejemplos: Clientes, Proyectos
     ```py
-    customer_ids = fields.Many2Many(
+    customer_ids = fields.Many2many(
         string="Customers",
         comodel_name="res.partner",
     )
     ```
+- `Monetary`:
+  - Requerido: string, currency_field
+  - Almacena valores monetarios en un moneda especifica.
+  - Ejemplos: Clientes, Proyectos
+    ```py
+    company_currency_id = fields.Many2one(
+        string="Company Currency", related="company_id.currency_id"
+    )
 
-|Monetary | string
+    customer_ids = fields.Monetary(
+        string="Customers",
+        currency_field="company_currency_id",
+    )
+    ```
 
+#### Parámetros
+
+| Nombre | Descripción | Ejemplo |
+| --- | --- | --- |
+| string | Nombre del campo que se mostrará en la interfaz de usuario. | `name = fields.Char(string='Nombre')` |
+| required | Indica si el campo es obligatorio o no. Si se establece en True, el campo no puede estar vacío. | `name = fields.Char(string='Nombre', required=True)` |
+| readonly | Si se establece en True, el campo será de solo lectura y no se podrá modificar su valor. | `name = fields.Char(string='Nombre', readonly=True)` |
+| default | Valor predeterminado del campo cuando se crea un nuevo registro. | `name = fields.Char(string='Nombre', default='Sin nombre')` |
+| help | Descripción adicional del campo que se mostrará como un tooltip en la interfaz de usuario. | `name = fields.Char(string='Nombre', help='Escriba el nombre del cliente')` |
+| size | Se utiliza para limitar el número máximo de caracteres que se pueden ingresar en el campo. | `name = fields.Char(string='Nombre', size=50)` |
+| digits | Se utiliza para especificar el número de dígitos enteros y decimales que se mostrarán en el campo. | `price = fields.Float(string='Precio', digits=(6, 2))` |
+| currency_field | Nombre del campo que se utilizará para almacenar el código de la moneda cuando se utiliza un campo "Monetary". | `price = fields.Monetary(string='Precio', currency_field='currency_id')` |
+| compute | Calcula el valor del campo mediante una función que se define en el modelo. | `total = fields.Float(compute='_compute_total')` |
+| inverse | Define una función que se ejecutará cuando se modifique el valor del campo y se actualizarán otros campos relacionados en consecuencia. | `price = fields.Float(inverse='_compute_tax')` |
+| store | Indica si los valores del campo se deben almacenar en la base de datos. Si se establece en False, el valor del campo se calculará cada vez que se acceda al registro. | `name = fields.Char(string='Nombre', store=True)` |
+| related | Se utiliza para obtener el valor de un campo relacionado en otro modelo. | `company_name = fields.Char(related='company_id.name', string='Nombre de la empresa')` |
+| index | Se utiliza para crear un índice en el campo para acelerar las búsquedas en la base de datos. | `name = fields.Char(string='Nombre', index=True)` |
+| groups | Se utiliza para especificar los grupos de usuarios que tienen acceso al campo. | `name = fields.Char(string='Nombre', groups='base.group_user')` |

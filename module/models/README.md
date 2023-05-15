@@ -2,7 +2,6 @@
 - Básicamente son clases de Python.
 - Se configura la lógica del negocio.
 - Odoo utiliza su propia ORM(Object-Relational Mapping) para poder tener un mejor control de la base datos, el lugar de basarse en consultas SQL.
-- Esta compuesto por las siguientes partes.
 
 ### Campos o atributos:
 - `_name`: Requerido
@@ -147,3 +146,16 @@
 | related | Se utiliza para obtener el valor de un campo relacionado en otro modelo. | `company_name = fields.Char(related='company_id.name', string='Nombre de la empresa')` |
 | index | Se utiliza para crear un índice en el campo para acelerar las búsquedas en la base de datos. | `name = fields.Char(string='Nombre', index=True)` |
 | groups | Se utiliza para especificar los grupos de usuarios que tienen acceso al campo. | `name = fields.Char(string='Nombre', groups='base.group_user')` |
+
+
+#### Built-in Functions:
+- `create()`: Crea un nuevo registro en el modelo utilizando los valores proporcionados en el dicccionario `vals`. Devuelve el nuevo registro creado.
+
+```py
+new_product_data = {
+    'name': 'Camiseta',
+    'price': 19.99,
+    'category': 'Ropa',
+}
+new_product = Product.create(new_product_data)
+```

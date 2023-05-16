@@ -3,7 +3,8 @@
 - Se configura la lógica del negocio.
 - Odoo utiliza su propia ORM(Object-Relational Mapping) para poder tener un mejor control de la base datos, el lugar de basarse en consultas SQL.
 
-### Campos o atributos:
+### Campos (fields):
+#### Campos por defecto:
 - `_name`: Requerido
   - Nombre del modelo y por ende en la base de datos, se utiliza puntos pero en la base de datos se transforma en `_`.
   - Ejemplo: `product.template` => `product_template`
@@ -20,7 +21,7 @@
 - `write_uid`: Creado por defecto
   - Usuario que realizó la última modificación.
 
-#### Tipos de campos:
+##### Campos opcionales:
 - `Char`: 
   - Requerido: string
   - Cadena de texto limitado a 256 caracteres
@@ -128,7 +129,7 @@
     )
     ```
 
-#### Parámetros
+##### Parámetros:
 
 | Nombre | Descripción | Ejemplo |
 | --- | --- | --- |
@@ -148,14 +149,52 @@
 | groups | Se utiliza para especificar los grupos de usuarios que tienen acceso al campo. | `name = fields.Char(string='Nombre', groups='base.group_user')` |
 
 
-#### Built-in Functions:
-- `create()`: Crea un nuevo registro en el modelo utilizando los valores proporcionados en el dicccionario `vals`. Devuelve el nuevo registro creado.
+### Built-in Functions:
+
+Funciones integradas en los modelos de las cuales puedes hacer uso o sobrescribirlas.
+
+- `create()`: Crea un nuevo registro en el modelo utilizando los valores proporcionados en un diccionario. Devuelve el nuevo registro creado.
 
 ```py
-new_product_data = {
-    'name': 'Camiseta',
-    'price': 19.99,
-    'category': 'Ropa',
-}
-new_product = Product.create(new_product_data)
+class your_model(models.Model):
+    _name='your.model'
+
+    @api.model
+    def create(self):
+        values = {
+          'name': 'New name',
+          'price': 25.99,
+          'category': 'Moda',
+        }
+        override_create = super(your_model,self).create(values)
+        return override_create
+```
+- `write()`: Actualiza los valores de uno o varios registros existentes en un modelo. Permite modificar los campos específicos de un registro sin tener que crear un nuevo registro.
+
+```py
+class your_model(models.Model):
+    _name='your.model'
+
+    @api.model
+    def write(self):
+      values = {
+        'name': 'New name',
+        'price': 25.99,
+        'category': 'Moda',
+      }
+      override_write = super(your_model,self).write(values)
+      return override_write
+```
+- `unlink()`: Elimina permanentemente uno o varios registros existentes en un modelo.
+
+```py
+class your_model(models.Model):
+    _name='your.model'
+
+    @api.model
+    def CustomFunction(self):
+      # Logic here
+      products = self.search([('category', '=', 'Factory')])
+      # Eliminar los productos encontrados
+      products.unlink()
 ```

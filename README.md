@@ -5,3 +5,7 @@ Este es una documentación de creación propia basada en documentación oficial,
 
 
 ### [Instalación](./installation/README.md)
+
+### [Módulos](./module/)
+
+### [Notas](./Notas/)

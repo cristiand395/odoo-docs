@@ -151,7 +151,7 @@
 
 ### Built-in Functions:
 
-Funciones integradas en los modelos de las cuales puedes hacer uso o sobrescribirlas.
+Funciones integradas en los modelos que se utilizan para realizar operaciones comunes en los registros.
 
 - `create()`: Crea un nuevo registro en el modelo utilizando los valores proporcionados en un diccionario. Devuelve el nuevo registro creado.
 
@@ -198,3 +198,4 @@ class your_model(models.Model):
       # Eliminar los productos encontrados
       products.unlink()
 ```
+

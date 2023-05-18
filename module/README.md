@@ -1,32 +1,54 @@
 ### Estructura de un Módulo
 ```txt
 module
-├── models
-│   ├── website_sale.py
-│   │__ __init__.py
+├── controllers
+│   ├── *.py
+│   └── __init__.py
 ├── data
 │   └── *.xml
+├── models
+│   ├── *.py
+│   └── __init__.py
 ├── security
-│   └── ir.mode.access.csv
+│   ├── ir.mode.access.csv
+│   └── *.csv
+├── static
+│   ├── description
+│   │    ├── *.png
+|   |    └── *.svg
+│   └── src
+│        ├── img
+|        |    |── *.png
+|        |    └── *.gif
+│        ├── js
+|        |    └── *.js
+|        |── scss
+|        |    └── *.js
+|        └── xml
+|             └── *.xml
+├── test
+│    |── *.py
+│    └── __init__.py
 ├── views
-│   └── templates.xml
+│    └── *.xml
 ├── __init__.py
-└──  __manifest__.py
+└── __manifest__.py
 ```
+
 Ninguno es obligatorio
 
-- Business objects (Models):
+- Web controllers ([Controllers](./controllers/README.md)):
+    - Controlan las solicitudes HTTP.
+    - Redirecciones de URL
+- Business objects ([Models](./models/README.md)):
     - Python Objets
     - Describe la lógica e información del negocio
-- Objects views (Views):
+- Objects views ([Views](./views/README.md)):
     - La forma como se verán los Business Objects (UI)
     - XML
-- Data files (Data):
+- Data files ([Data](./data/README.md)):
     - Donde se declaran y guardan los datos del modelo
     - XML o CSV
-- Static web data (Static):
+- Static web data ([Static](.static/README.md)):
     - HTML, CSS, Javascript, Imagenes, etc.
-- Web controllers (Controllers):
-    - Manejan requests de los navegadores.
-    - Redirecciones de URL
 

@@ -1,27 +1,38 @@
 ## Models
-- Clases de Python.
 - Se configura la lógica del negocio.
 - Odoo utiliza su propia ORM (Object-Relational Mapping) para poder tener un mejor control de la base datos, el lugar de basarse en consultas SQL.
 - Aquí se crean las tablas y columnas en la base de datos.
-### Campos (fields):
-#### Campos por defecto:
-- `_name`: Requerido
-  - Nombre del modelo y por ende en la base de datos, se utiliza puntos pero en la base de datos se transforma en `_`.
-  - Ejemplo: `product.template` => `product_template`
-- `_inherit`: No requerido
-  - Modelos de necesarios para su creación
-- `id`: Creado por defecto
-  - Id en la base de datos
-- `create_date`: Creado por defecto
-  - Fecha de creación del registro
-- `create_uid`: Creado por defecto
-  - Usuario que creó el registro
-- `write_date`: Creado por defecto
-  - Última modificación del registro
-- `write_uid`: Creado por defecto
-  - Usuario que realizó la última modificación.
+- Son básicamente clases de Python y todas extienden de la clase `Model`. 
+```python
+from odoo import models
 
-##### Campos opcionales:
+class TestModel(models.Model):
+  _name = "test.model"
+```
+
+### Campos (Fields):
+Son los atributos que tiene un modelo que en PostgreSQL equivale a las columnas de una tabla.
+
+#### Campos automáticos:
+- `id`: Id en la base de datos
+- `create_date` (`Datetime`): Fecha de creación del registro
+- `create_uid`(`Many2one`): Usuario que creó el registro
+- `write_date`(`Datetime`): Última modificación del registro
+- `write_uid`(`Many2one`): Usuario que realizó la última modificación.
+#### Otros campos:
+- `_name`(**Requerido**): Nombre del modelo y por ende en la base de datos, se utiliza puntos pero en la base de datos se transforma en `_`.
+  - Ejemplo: `product.template` => `product_template`
+- `_inherit`: Permite extender o modificar el comportamiento de un modelo existente sin tener que crear uno nuevo desde cero.
+  ```py
+  class MyModel(models.Model):
+    _name = 'my.module'
+    _inherit = ['res.partner', 'res.users']
+    _description = 'My Model'
+
+    new_field = fields.Char(string='New Field')
+  ```
+
+##### Tipos de campos:
 - `Char`: 
   - Requerido: string
   - Cadena de texto limitado a 256 caracteres
@@ -128,25 +139,57 @@
         currency_field="company_currency_id",
     )
     ```
+- `_sql_constraints`:
+  - Propiedad utilizada para agregar restricciones o condiciones en **SQL** para asegurar la correcta definición o modificación de un registro. 
+  - Se toman como campos a utilizar aquellos que tengan habilitadas el parámetro `index=True`
+  - Sintaxis:
+  ```python
+  _sql_constraints = [
+    ('constraint_name', 'SQL_condition', 'error_message'),
+  ]
+  ```
+  - Ejemplo:
+  ```python
+  class MyModel(models.Model):
+    _name = 'my.module'
+    _description = 'My Model'
 
+    name = fields.Char(string='Name', index=True)
+    category = fields.Selection(
+        [('A', 'Category A'),
+         ('B', 'Category B'),
+         ('C', 'Category C')],
+        string='Category',
+        index=True
+    )
+    date = fields.Date(string='Date')
+    amount = fields.Float(string='Amount')
+
+    _sql_constraints = [
+        ('name_category_uniq', 'unique(name, category)', 'Name and Category must be unique'),
+    ]
+
+  ```
 ##### Parámetros:
 
 | Nombre | Descripción | Ejemplo |
 | --- | --- | --- |
-| string | Nombre del campo que se mostrará en la interfaz de usuario. | `name = fields.Char(string='Nombre')` |
-| required | Indica si el campo es obligatorio o no. Si se establece en True, el campo no puede estar vacío. | `name = fields.Char(string='Nombre', required=True)` |
-| readonly | Si se establece en True, el campo será de solo lectura y no se podrá modificar su valor. | `name = fields.Char(string='Nombre', readonly=True)` |
-| default | Valor predeterminado del campo cuando se crea un nuevo registro. | `name = fields.Char(string='Nombre', default='Sin nombre')` |
-| help | Descripción adicional del campo que se mostrará como un tooltip en la interfaz de usuario. | `name = fields.Char(string='Nombre', help='Escriba el nombre del cliente')` |
-| size | Se utiliza para limitar el número máximo de caracteres que se pueden ingresar en el campo. | `name = fields.Char(string='Nombre', size=50)` |
-| digits | Se utiliza para especificar el número de dígitos enteros y decimales que se mostrarán en el campo. | `price = fields.Float(string='Precio', digits=(6, 2))` |
-| currency_field | Nombre del campo que se utilizará para almacenar el código de la moneda cuando se utiliza un campo "Monetary". | `price = fields.Monetary(string='Precio', currency_field='currency_id')` |
 | compute | Calcula el valor del campo mediante una función que se define en el modelo. | `total = fields.Float(compute='_compute_total')` |
-| inverse | Define una función que se ejecutará cuando se modifique el valor del campo y se actualizarán otros campos relacionados en consecuencia. | `price = fields.Float(inverse='_compute_tax')` |
-| store | Indica si los valores del campo se deben almacenar en la base de datos. Si se establece en False, el valor del campo se calculará cada vez que se acceda al registro. | `name = fields.Char(string='Nombre', store=True)` |
-| related | Se utiliza para obtener el valor de un campo relacionado en otro modelo. | `company_name = fields.Char(related='company_id.name', string='Nombre de la empresa')` |
-| index | Se utiliza para crear un índice en el campo para acelerar las búsquedas en la base de datos. | `name = fields.Char(string='Nombre', index=True)` |
+| currency_field | Nombre del campo que se utilizará para almacenar el código de la moneda cuando se utiliza un campo "Monetary". | `price = fields.Monetary(string='Precio', currency_field='currency_id')` |
+| default | Valor predeterminado del campo cuando se crea un nuevo registro. | `name = fields.Char(string='Nombre', default='Sin nombre')` |
+| digits | Se utiliza para especificar el número de dígitos enteros y decimales que se mostrarán en el campo. | `price = fields.Float(string='Precio', digits=(6, 2))` |
 | groups | Se utiliza para especificar los grupos de usuarios que tienen acceso al campo. | `name = fields.Char(string='Nombre', groups='base.group_user')` |
+| help | Descripción adicional del campo que se mostrará como un tooltip en la interfaz de usuario. | `name = fields.Char(string='Nombre', help='Escriba el nombre del cliente')` |
+| index | Crea un índice en el campo para acelerar las búsquedas en la base de datos. Su uso excesivo puede generar sobrecarga del servidor| `name = fields.Char(string='Nombre', index=True)` |
+| inverse | Define una función que se ejecutará cuando se modifique el valor del campo y se actualizarán otros campos relacionados en consecuencia.|`price = fields.Float(inverse='_compute_tax')` 
+| invisible | Define la visibilidad de unc campo, se pueden funciones . |`field1 = fields.Char(string='Field 1') field2 = fields.Char(string='Field 2', invisible=lambda self: self.field1 == 'Value')` |
+| readonly | Si se establece en True, el campo será de solo lectura y no se podrá modificar su valor. | `name = fields.Char(string='Nombre', readonly=True)` |
+| related | Se utiliza para obtener el valor de un campo relacionado en otro modelo. | `company_name = fields.Char(related='company_id.name', string='Nombre de la empresa')` |
+| required | Indica si el campo es obligatorio o no. Si se establece en True, el campo no puede estar vacío. | `name = fields.Char(string='Nombre', required=True)` |
+| size | Se utiliza para limitar el número máximo de caracteres que se pueden ingresar en el campo. | `name = fields.Char(string='Nombre', size=50)` |
+| states | Define el comportamiento de un campo en función del estado del registro. | ```state = fields.Selection([('draft', 'Draft'),('open', 'Open'),('closed', 'Closed'),], string='State', default='draft') field1 = fields.Char(string='Field 1', states={'open': [('readonly', True)]}) field2 = fields.Char(string='Field 2', states={'closed': [('required', True)]})``` |
+| store | Indica si los valores del campo se deben almacenar en la base de datos. Si se establece en False, el valor del campo se calculará cada vez que se acceda al registro. | `name = fields.Char(string='Nombre', store=True)` |
+| string | Nombre del campo que se mostrará en la interfaz de usuario. | `name = fields.Char(string='Nombre')` |
 
 
 ### Built-in Functions:
@@ -185,7 +228,7 @@ class your_model(models.Model):
       override_write = super(your_model,self).write(values)
       return override_write
 ```
-- `unlink()`: Elimina permanentemente uno o varios registros existentes en un modelo.
+- `unlink()`: Elimina **permanentemente** uno o varios registros existentes en un modelo.
 
 ```py
 class your_model(models.Model):
@@ -203,7 +246,7 @@ class your_model(models.Model):
 ### Odoo ORM:
 Una [ORM]("https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping") (Object-Relational Mapping) es una técnica de programación que permite mapear objetos de una aplicación (Odoo) a entidades relacionales en una base de datos relacional (Postgresql). Proporciona una abstracción entre la lógica de la aplicación y la estructura de la base de datos, lo que facilita el manejo y la manipulación de los datos.
 
-Odoo utiliza su propia capa de ORM llamada Odoo ORM, que está diseñada para facilitar la creación, actualización, búsqueda y eliminación de registros en la base de datos.
+Odoo utiliza su propia capa de ORM llamada Odoo ORM, que está diseñada para facilitar la creación, actualización, búsqueda y eliminación de registros en la base de datos, además de ayudar con la seguridad.
 
 Algunos ejemplos de uso de Odoo ORM:
 - **Modelos**:

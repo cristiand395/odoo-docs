@@ -1,8 +1,8 @@
 ## Models
-- Básicamente son clases de Python.
+- Clases de Python.
 - Se configura la lógica del negocio.
-- Odoo utiliza su propia ORM(Object-Relational Mapping) para poder tener un mejor control de la base datos, el lugar de basarse en consultas SQL.
-
+- Odoo utiliza su propia ORM (Object-Relational Mapping) para poder tener un mejor control de la base datos, el lugar de basarse en consultas SQL.
+- Aquí se crean las tablas y columnas en la base de datos.
 ### Campos (fields):
 #### Campos por defecto:
 - `_name`: Requerido
@@ -197,5 +197,49 @@ class your_model(models.Model):
       products = self.search([('category', '=', 'Factory')])
       # Eliminar los productos encontrados
       products.unlink()
+```
+
+
+### Odoo ORM:
+Una [ORM]("https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping") (Object-Relational Mapping) es una técnica de programación que permite mapear objetos de una aplicación (Odoo) a entidades relacionales en una base de datos relacional (Postgresql). Proporciona una abstracción entre la lógica de la aplicación y la estructura de la base de datos, lo que facilita el manejo y la manipulación de los datos.
+
+Odoo utiliza su propia capa de ORM llamada Odoo ORM, que está diseñada para facilitar la creación, actualización, búsqueda y eliminación de registros en la base de datos.
+
+Algunos ejemplos de uso de Odoo ORM:
+- **Modelos**:
+  - Los modelos en Odoo representan las entidades principales de la aplicación, como clientes, productos o pedidos.
+  - Cada modelo esta asociado a una  tabla en la base de datos y define la estructura de los campos y los comportamientos del modelo.
+```python
+class Customer(models.Model):
+    _name = 'my_module.customer'
+    name = fields.Char(string='Name')
+    email = fields.Char(string='Email')
+```
+- **Registros**:
+  - Los registros son instancias individuales de un modelo y representan filas en la base de datos.
+  - Se pueden crear, leer, actualizar y eliminar registros utilizando los [métodos](#built-in-functions) proporcionados por la ORM de Odoo.
+```python
+customer = Customer.create({'name': 'John Doe', 'email': 'john.doe@example.com'})
+customer.name  # Acceder a un campo del registro
+customer.write({'name': 'Jane Smith'})  # Actualizar un campo del registro
+customer.unlink()  # Eliminar el registro
+```
+- **Consultas**:
+  - Se pueden realizar consultas a la base de datos utilizando la sintaxis de dominio de Odoo.
+  - La sintaxis de dominio permite filtrar y buscar registros basados en ciertos criterios.
+```python
+customers = Customer.search([('name', 'ilike', 'John')])  # Buscar registros que contengan 'John' en el campo 'name'
+for customer in customers:
+    print(customer.name)
+```
+- **Relaciones**:
+  - Los modelos pueden tener relaciones entre sí para representar asociaciones o dependencias.
+  - Se pueden definir diferentes tipos de relaciones, como One2Many, Many2one y Many2Many.
+```python
+class Order(models.Model):
+    _name = 'my_module.order'
+    customer_id = fields.Many2one('my_module.customer', string='Customer')
+    product_ids = fields.Many2many('my_module.product', string='Products')
+
 ```
 

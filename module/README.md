@@ -1,3 +1,10 @@
+## Módulo:
+- Base esencial de Odoo, es una colección de funciones y datos que apuntan a un solo propósito.
+
+- Pueden servir para crear una nueva lógica de negocio, modificar una ya existente o ampliarla.
+
+- 
+
 ### Estructura de un Módulo
 ```txt
 module
@@ -35,7 +42,6 @@ module
 └── __manifest__.py
 ```
 
-Ninguno es obligatorio
 
 - Web controllers ([Controllers](./controllers/README.md)):
     - Controlan las solicitudes HTTP.
@@ -52,3 +58,7 @@ Ninguno es obligatorio
 - Static web data ([Static](.static/README.md)):
     - HTML, CSS, Javascript, Imagenes, etc.
 
+
+#### Notas:
+- Los únicos elementos obligatorios para la creación de un módulos son el `manifest.py` y el `__init__.py`.
+- Cuando un módulo no tiene archivos python, el archivo `__init__.py` puede permanecer vacío pero siempre debe existir.

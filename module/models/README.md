@@ -174,7 +174,9 @@ Son los atributos que tiene un modelo que en PostgreSQL equivale a las columnas 
 
 | Nombre | Descripción | Ejemplo |
 | --- | --- | --- |
+| company_dependent | Si se establece en `True` indica que el campo debe tener diferente valor para cada compañía. Por defecto es `False` | `sale_discount = fields.Float(string="Discount",company_dependent=True)` |
 | compute | Calcula el valor del campo mediante una función que se define en el modelo. | `total = fields.Float(compute='_compute_total')` |
+| copy | Controla el comportamiento del campo al ser duplicado. Posibles valores `True, False, `| `total = fields.Float(compute='_compute_total')` |
 | currency_field | Nombre del campo que se utilizará para almacenar el código de la moneda cuando se utiliza un campo "Monetary". | `price = fields.Monetary(string='Precio', currency_field='currency_id')` |
 | default | Valor predeterminado del campo cuando se crea un nuevo registro. | `name = fields.Char(string='Nombre', default='Sin nombre')` |
 | digits | Se utiliza para especificar el número de dígitos enteros y decimales que se mostrarán en el campo. | `price = fields.Float(string='Precio', digits=(6, 2))` |
@@ -283,6 +285,6 @@ class Order(models.Model):
     _name = 'my_module.order'
     customer_id = fields.Many2one('my_module.customer', string='Customer')
     product_ids = fields.Many2many('my_module.product', string='Products')
-
 ```
+
 

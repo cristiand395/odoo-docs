@@ -1,4 +1,4 @@
-## Models
+# Models
 - Se configura la lógica del negocio.
 - Odoo utiliza su propia ORM (Object-Relational Mapping) para poder tener un mejor control de la base datos, el lugar de basarse en consultas SQL.
 - Aquí se crean las tablas y columnas en la base de datos.

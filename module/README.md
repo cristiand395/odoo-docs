@@ -1,4 +1,4 @@
-## Módulo:
+# Módulo:
 - Base esencial de Odoo, es una colección de funciones y datos que apuntan a un solo propósito.
 
 - Pueden servir para crear una nueva lógica de negocio, modificar una ya existente o ampliarla.

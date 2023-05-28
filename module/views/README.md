@@ -1,4 +1,4 @@
-## Vistas:
+# Vistas:
 - Las vistas son los registros que serán visibles para los usuarios finales.
 - Esta basado de XML lo cual permite ser editado independiente de los modelos.
 

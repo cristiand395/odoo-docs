@@ -18,7 +18,7 @@
     'post_init_hook': '_auto_install_l10n',  # Función después de la instalación,
     'uninstall_hook': '_auto_install',
     'data': [
-        # Los datos siempre cargan en la instalacion, secuencia debe ser la siguiente:
+        # Los datos siempre cargan en la instalacion, solo se cargan cuando se instala o actualiza el modulo. Secuencia debe ser la siguiente:
         'data/data.xml',
         'security/ir.model.access.csv',
         'wizard/wizard.xml'

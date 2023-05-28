@@ -3,8 +3,8 @@
 
 
 ## Estructura:
-- ID: Identificador externo que hace referencia al registro sin importar su lugar en la base de datos.
-- ***: Otros valores necesarios para el registro basados en el modelo al que apunta.
+- **ID**: Identificador externo que hace referencia al registro sin importar su lugar en la base de datos.
+- **others**: Otros valores necesarios para el registro basados en el modelo al que apunta.
 - 
 Ejemplo: Países
 ```csv

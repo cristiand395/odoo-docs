@@ -4,7 +4,9 @@
 
 
 ## No se aplican cambios por más que actualice el módulo
-- Revisa que el módulo este instalado, por algún motivo no se debió instalar o quizás se desinstaló.
+- Revisa que el módulo este instalado, algunos motivos por los cuales no este instalado son:
+  - Necesita de una librería no establecida en el manifest
+  - Alguna dependencia no esta instalada.
 - Puedes actualizar la lista de aplicaciones e instalar el módulo o directamente desde la línea de comandos:
 ```bash
 ~/odoo/odoo/odoo.bin -c ~/odoo/odoo/debian/odoo.conf -i $Module
@@ -17,16 +19,17 @@ from odoo import models
 
 class MyModel(model.Model):
     # Acceder a la tabla productos
-    products = self.env[¨product.template¨]
-
-    # Utilizar dominios para hacer filtros
-    domain = [
-        ("country", "=", "Spain"),
-        ("name", "like", "Light"),
-        ("category", "ilike", "last"),
-        ("active", "!=", False),
-        ("price", ">=", 2000)
-    ]
+    def getProductData(self):
+        products = self.env[¨product.template¨]
+        
+        # Utilizar dominios para hacer filtros
+        domain = [
+            ("country", "=", "Spain"),
+            ("name", "like", "Light"),
+            ("category", "ilike", "last"),
+            ("active", "!=", False),
+            ("price", ">=", 2000)
+        ]
 
     # Logic here 
 ```

@@ -8,4 +8,4 @@
 Nota:
 - Los `id` de las vistas también son identificadores externos.
 - Los identificadores externos son únicos por módulo.
-- No se pueden agregar identificadores externos a registros ya creados desde la interfaz de Odoo.
+- No se pueden agregar identificadores externos a registros ya creados desde la interfaz de Odoo. Se pueden generar automáticamente exportando el identificador externo, tiene una sintaxis predefinida por Odoo.

@@ -8,4 +8,4 @@ Este es una documentación de creación propia basada en documentación oficial,
 
 ### [Módulos](./module/)
 
-### [Notas](./FAQs.md/)
+### [FAQs](./FAQs.md/)

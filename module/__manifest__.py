@@ -34,5 +34,9 @@
         # Data que se usara como demostración
     'demo/demo_data.xml',
     ],
+    'external_dependencies': {
+        'python': ['requests'],
+        'bin': ['wkhtmltopdf'],
+    },
 }
 

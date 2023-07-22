@@ -1,4 +1,4 @@
-## Controlllers:
+# Controlllers:
 
 Siguen el patrón de diseño Model-View-Controller (MVC). En este patrón, los controllers actúan como la capa de control que maneja las solicitudes y coordina las interacciones entre los modelos de datos y las vistas.
 
@@ -10,7 +10,14 @@ Los controllers en Odoo brindan la capacidad de personalizar y extender la funci
 
 En resumen, los controllers en un módulo de Odoo son componentes que manejan las solicitudes HTTP y generan respuestas correspondientes. Son parte del patrón MVC y permiten personalizar y extender la funcionalidad del servidor Odoo.
 
-### Parámetros:
+## API
+### **Routing** [Fuente](https://github.com/odoo/odoo/blob/15.0/odoo/http.py#L442)
+```
+odoo.http.route(route=None, **kw)
+``` 
+Se utilliza para especificar la URL que activara la funcion definida.
+
+#### Parámetros:
 - route (string): Especifica la ruta o rutas URL que se manejarán.
 
 - type (string): Especifica el tipo de respuesta que se espera. Los valores comunes incluyen:
@@ -48,3 +55,16 @@ En resumen, los controllers en un módulo de Odoo son componentes que manejan la
         # Logic
         return res
 ```
+
+### **Request** [fuente](https://github.com/odoo/odoo/blob/15.0/odoo/http.py#L163)
+```
+odoo.http.WebRequest(httprequest)
+``` 
+Este decorador permite acceder y manipular los datos de la solicitud HTTP entrandte, como parametro GET, POST o archivos adjuntos. Puedes utilizarlo para validar datos, realizar acciones especificas antes que se procese la solicitud o modificar los datos recibidos.
+
+
+### **Response** [fuente](https://github.com/odoo/odoo/blob/15.0/odoo/http.py#L1184)
+```
+odoo.http.Response(*args, **kw)
+``` 
+Se utiliza para personalizar la respuesta HTTP que el servidor enviara al cliente. Puedes usarlo para modificar los header, establecer cookies, redirigir a otra URL o devolver contendio.
